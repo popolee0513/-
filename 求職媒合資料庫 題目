@@ -5,3 +5,162 @@
 有興趣的同學可登記履歷，包括基本資料、經驗、專長、有興趣的產業分類(可多選) 等。
 同學可以把廠商加入最愛清單，也可以對職缺投履歷，
 其它部份學校沒意見，請自行發揮
+
+
+我們總共有12個entity如下：
+1.inform_record :廠商通知學生紀錄
+	attributes:
+	(1).inform_record_ID
+	(2).inform_date
+	(3).student_ID
+	(3).company_ID
+	Primary Key : inform_record_ID
+		
+2.industry_company_list :廠商歸屬之產業分類
+	attributes:
+	(1).company_ID
+	(2).industry_type_ID
+	Primary Key : (company_ID, industry_type_ID)
+
+3.industry_job_list : 職缺歸屬之產類分類
+	attributes:
+	(1).industry_type_ID
+	(2).job_ID
+	Primary Key : (industry_type_ID, job_ID)
+
+4.job :職缺
+	attributes:
+	(1).job_ID
+	(2).job_title
+           (3) job content
+	(4).salary
+	(5).work_hour
+	(6).fulltime_or_parttime
+	(7).when_to_on_board
+	(8).{required_skill}
+	Primary Key : job_ID
+
+5.resumes :履歷表
+	attributes
+	(1).resume_ID
+	(2).chinese_name
+	(3).english_name
+	(4).photo
+	(5).cell_phone_number
+	(6).other_phone_number
+	(7).e-mail
+	(8).highest_education
+	(9).second_highest_education
+	(10).{resume_address(County_or_city, District, Road_or_street)}
+	(11).work_experience(work_exp_ID, {work_exp_title}, {work_exp_content})
+	(12).attached_file(attached_file_ID, {attached_file})
+	(13).skill(skill_id, {Language_skill},{Language_Level} , {Computer_skill})
+	Primary Key : resume_ID
+
+6.company :廠商
+	attributes:
+	(1).Company_ID
+	(2).Company_name
+	(3).capital
+	(4).phone
+	(5).fax
+	(6).URL
+	(7).introduction
+	(8).staff_number
+	(9).{service_product}
+	(10).{welfare}
+	(11).{Company_address(County_or_city, District, Road_or_street)}
+	Primary Key : Company_ID
+
+7.student :台大學生
+	attributes:
+	(1).student_ID
+	(2).department
+	(3).password
+	Primary Key : student_ID
+
+8.industry_type :產業分類
+	attributes:
+	(1).industry_type_name
+	Primary Key : industry_type_name
+
+9.apply_record : 學生投遞職缺紀錄
+	attributes:
+	(1).apply_record_ID
+	(2).apply_date
+	(3).job_ID
+	(4).student_ID
+	Primary Key : apply_record_ID
+
+10.favorite_company_list (associate entity): 最愛廠商清單
+	attributes:
+	(1).student_ID
+	(2).company_ID
+	Primary Key : (student_ID, company_ID)
+
+11.favorite_job_list (associate entity): 最愛職缺清單
+	attributes:
+	(1).student_ID
+	(2).job_ID
+	Primary Key : (student_ID, job_ID)
+
+12.favorite_industry_list (associate entity): 最愛產業清單
+	attributes:
+	(1).student_ID
+	(2).industry_ID
+	Primary Key : (student_ID, industry_ID)
+
+
+
+三、Relationship
+
+1.inform_record and company
+	一個inform_record只能來自於一家company 
+	一家company可以沒有或發出多個inform_record
+
+2.inform_record and student
+	一個inform_record只能給一位student
+	一位student可以沒有或收到多個inform_record
+
+3.industry and company
+	一個industry中會有多家company
+	一家company會歸屬於一個以上的industry
+→ associate entity: industry_company_list
+ 
+4.industry and job
+	一個industry中會有多個job
+	一個job會歸屬於一個以上的industry
+→ associate entity: industry_job_list
+
+5. job and company
+	一個job只能是一家company給予的
+	一家company可以沒有或開出多個job
+
+6.resume and apply_record
+	一份resume只會有一筆apply_record
+	一個apply_record只能來自一份resume
+
+7.resume and student
+	一份resume只能來自一位student
+	一個student可以沒有或製作多份resume
+
+8.job and student
+	一個job可以沒有或被多個student加入最愛清單
+	一位student可以沒有或將多個job加入最愛清單
+→ associate entity: favorite_job_list
+ 
+9.industry and student
+	一個industry可以沒有或被多位student加入最愛清單
+	一位student可以沒有或將多個industry加入最愛清單
+→ associate entity: favorite_industry_list
+
+
+10.company and student
+	一間company可以沒有或被多個student加入最愛清單
+	一位student可以沒有或將多間company加入最愛清單
+→ associate entity: favorite_company_list
+
+11.apply_record and job
+	一份apply_record只能對應到一個job
+	一個job只能對應到一筆apply_record
+
