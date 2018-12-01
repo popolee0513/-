@@ -1,0 +1,188 @@
+CREATE Database job;
+Use job;
+CREATE TABLE Company
+( Company_ID    INTEGER NOT NULL,
+
+  Company_name  VARCHAR(50) ,
+  Capital       INTEGER, 
+  Phone         varchar(15) ,
+  Fax           varchar(15) ,
+  URL           VARCHAR(50),
+  Introduction  VARCHAR(2000),
+  Staff_number  INTEGER,
+CONSTRAINT  PRIMARY KEY(Company_ID));
+
+CREATE TABLE  ADDRESS
+( Company_ID INTEGER  NOT NULL,
+City          varchar(15),
+District      varchar(15),
+Road_or_street   varchar(50),
+Ally           varchar(15),
+AllyNumber       INTEGER, 
+Floor             Integer,
+CONSTRAINT  PRIMARY KEY(Company_ID),
+CONSTRAINT  Foreign KEY(Company_ID) REFERENCES Company(Company_ID));
+
+
+CREATE TABLE Service_product_content
+(S_p  varchar(15),
+
+Company_ID  INTEGER  NOT NULL,
+
+CONSTRAINT  PRIMARY KEY(Company_ID,S_p),
+CONSTRAINT  Foreign KEY(Company_ID) REFERENCES Company(Company_ID));
+
+CREATE TABLE Welfare
+(Company_ID INTEGER  NOT NULL,
+Welfare  varchar(50),
+
+CONSTRAINT  PRIMARY KEY(Company_ID,Welfare),
+CONSTRAINT  Foreign KEY(Company_ID) REFERENCES Company(Company_ID));
+
+
+CREATE TABLE Student 
+(Student_ID INTEGER  NOT NULL,
+Department varchar(10),
+CONSTRAINT  PRIMARY KEY(Student_ID));
+
+
+CREATE TABLE Job
+(   Job_ID INTEGER  NOT NULL,
+Company_ID INTEGER  NOT NULL,
+	Job_title  varchar(10),
+	Salary   INTEGER ,
+	Work_address  varchar(50),
+	Work_hour INTEGER ,
+	Fulltime_or_parttime  varchar(10),
+	When_to_on_board  DATE ,
+
+CONSTRAINT  PRIMARY KEY(Job_ID)，
+CONSTRAINT  Foreign KEY(Company_ID) REFERENCES Company(Company_ID));
+
+
+
+
+
+CREATE TABLE Required_skill
+		 ( Skill  varchar(10),
+           Job_ID  INTEGER  NOT NULL,
+CONSTRAINT  PRIMARY KEY(Job_ID,Skill),
+CONSTRAINT  Foreign KEY(Job_ID) REFERENCES Job(Job_ID));
+
+
+CREATE TABLE Industry_type
+    (Industry_type_name  varchar(10) NOT NULL ,
+
+CONSTRAINT  PRIMARY KEY(Industry_type_name));
+
+CREATE TABLE Favorite_company_list 
+           (Student_ID INTEGER  NOT NULL,
+            Company_ID   INTEGER  NOT NULL,
+CONSTRAINT  PRIMARY KEY(Student_ID,Company_ID),
+CONSTRAINT  Foreign KEY(Student_ID) REFERENCES Student(Student_ID),
+CONSTRAINT  Foreign KEY(Company_ID) REFERENCES Company(Company_ID)); 
+
+CREATE TABLE Favorite_job_list 
+           (Student_ID INTEGER  NOT NULL,
+            Job_ID   INTEGER  NOT NULL,
+CONSTRAINT  PRIMARY KEY(Student_ID,Job_ID),
+CONSTRAINT  Foreign KEY(Student_ID) REFERENCES Student(Student_ID),
+CONSTRAINT  Foreign KEY(Job_ID) REFERENCES Job(Job_ID));  
+
+CREATE TABLE Favorite_industry_list 
+           (Student_ID INTEGER  NOT NULL,
+            Industry_type_name varchar(10) NOT NULL ,
+CONSTRAINT  PRIMARY KEY(Student_ID,Industry_type_name),
+CONSTRAINT  Foreign KEY(Student_ID) REFERENCES Student(Student_ID),
+CONSTRAINT  Foreign KEY(Industry_type_name) REFERENCES Industry_type(Industry_type_name)); 
+
+CREATE TABLE   Inform_record
+            (Student_ID INTEGER  NOT NULL,
+            Company_ID   INTEGER  NOT NULL,
+			Inform_record_ID  INTEGER  NOT NULL,
+			Inform_date DATE ,
+
+CONSTRAINT  PRIMARY KEY(Inform_record_ID),
+CONSTRAINT  Foreign KEY(Student_ID) REFERENCES Student(Student_ID),
+CONSTRAINT  Foreign KEY(Company_ID) REFERENCES Company(Company_ID));
+
+
+ CREATE TABLE   Apply_record
+           (Student_ID INTEGER  NOT NULL,
+            Job_ID   INTEGER  NOT NULL,
+			Apply_record_ID  INTEGER  NOT NULL,
+            Apply_date date,
+
+CONSTRAINT  PRIMARY KEY(Apply_record_ID),
+CONSTRAINT  Foreign KEY(Student_ID) REFERENCES Student(Student_ID),
+CONSTRAINT  Foreign KEY(Job_ID) REFERENCES Job(Job_ID));  
+
+
+ CREATE TABLE Resumes
+            (Resume_ID   INTEGER  NOT NULL,
+			 Chinese_name      varchar(15) ,
+			 English_name      varchar(15) ,
+			 Photo             Varbinary(60000),
+			 Cell_phone_number   varchar(15) ,
+			 Other_phone_number   varchar(15) ,
+			 E_mail               varchar(30) ,
+             Address             varchar(50) ,
+             Highest_education    varchar(15) ,
+             Second_highest_education     varchar(15) ,
+CONSTRAINT  PRIMARY KEY(Resume_ID));
+
+CREATE TABLE Resumes_Address
+(Resume_ID INTEGER  NOT NULL,
+City          varchar(15),
+District      varchar(15),
+Road_or_street   varchar(50),
+Ally           varchar(15),
+AllyNumber       INTEGER, 
+Floor             Integer,
+CONSTRAINT  PRIMARY KEY(Resume_ID),
+CONSTRAINT  Foreign KEY(Resume_ID) REFERENCES Resumes(Resume_ID));
+
+
+
+
+CREATE TABLE Work_experience
+  (Resume_ID  INTEGER  NOT NULL,
+   Work_exp_ID INTEGER  NOT NULL,
+   Work_exp_title   varchar(50)  ,
+   Work_exp_content  varchar(200)   ,
+CONSTRAINT  PRIMARY KEY(Work_exp_ID),
+CONSTRAINT  Foreign KEY(Resume_ID) REFERENCES Resumes(Resume_ID));
+
+
+Create Table Attached_file
+   (  Resume_ID  INTEGER  NOT NULL,
+      Attached_file_ID INTEGER  NOT NULL,
+	  Attached_file   Varbinary(60000),
+CONSTRAINT  PRIMARY KEY(Attached_file_ID),
+CONSTRAINT  Foreign KEY(Resume_ID) REFERENCES Resumes(Resume_ID));
+
+
+Create Table  Skill
+    (Skill_ID    INTEGER  NOT NULL,
+     Resume_ID     INTEGER  NOT NULL,
+    Language_skill   varchar(30),
+    Language_Level   varchar(30),
+    computer_skill   varchar(30),
+CONSTRAINT  PRIMARY KEY(Skill_ID),
+CONSTRAINT  Foreign KEY(Resume_ID) REFERENCES Resumes(Resume_ID));
+
+
+Create Table  Industry_Job_list 
+        (Industry_type_name  varchar(10) NOT NULL ,
+         Job_ID     INTEGER  NOT NULL,
+CONSTRAINT  PRIMARY KEY(Industry_type_name,Job_ID),
+CONSTRAINT  Foreign KEY(Industry_type_name) REFERENCES Industry_type(Industry_type_name),
+CONSTRAINT  Foreign KEY(Job_ID) REFERENCES Job(Job_ID)); 
+
+
+Create Table  Industry_company_list 
+        (Industry_type_name  varchar(10) NOT NULL ,
+         Company_ID     INTEGER  NOT NULL,
+CONSTRAINT  PRIMARY KEY(Industry_type_name,Company_ID),
+CONSTRAINT  Foreign KEY(Industry_type_name) REFERENCES Industry_type(Industry_type_name),
+CONSTRAINT  Foreign KEY(Company_ID) REFERENCES Company(Company_ID)); 
