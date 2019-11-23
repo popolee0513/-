@@ -7,3 +7,5 @@
 [Python MySQL Database Connection Explained with Examples](https://pynative.com/python-mysql-database-connection/)
 
 [A thorough guide to SQLite database operations in Python](http://sebastianraschka.com/Articles/2014_sqlite_in_python_tutorial.html)
+
+[SQL](https://www.fooish.com/sql/)
