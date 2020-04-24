@@ -1,0 +1,4 @@
+delete t1
+from table t1, table t2
+where t1.columnA = t2.columnA
+and t1.rowid>t2.rowid
